@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: gunicorn dj_patt_check.wsgi
