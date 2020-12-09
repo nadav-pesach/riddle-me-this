@@ -168,8 +168,11 @@ def answer():
             game_played = Games.select().order_by(Games.game_id.desc()).count()
             query = Users.select(Users.user_name, peewee.fn.COUNT().alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(Users.user_name.desc()).limit(3)
             top_players = []
+            try:
             for user in query:
                 top_players += [user.user_name, user.total_points]
+            except peewee.ProgrammingError as err:
+                print(err)
             return render_template('index.j2', game_played=game_played, top_players=top_players, resulte=resulte)
     return render_template('game.j2', )
 
