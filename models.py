@@ -6,7 +6,7 @@ from peewee import AutoField, BooleanField, ForeignKeyField, IntegerField, Model
 from playhouse import connect
 # SqliteDatabase
 
-database = connect(os.environ.get('DATABASE_URL'), user='postgres')
+database = connect(os.environ.get('DATABASE_URL'))
 
 # database = SqliteDatabase('riddles_db')
 
