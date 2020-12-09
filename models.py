@@ -3,16 +3,9 @@ import csv
 
 import peewee
 from peewee import AutoField, BooleanField, ForeignKeyField, IntegerField, Model, PostgresqlDatabase, TextField
-import private
 # SqliteDatabase
 
-database = PostgresqlDatabase(
-    private.DATABASE,
-    user=private.USER,
-    password=private.PASSWORD,
-    host=private.HOST,
-    port=private.PORT,
-)
+database = PostgresqlDatabase(DATABASE_URL)
 
 # database = SqliteDatabase('riddles_db')
 
