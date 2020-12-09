@@ -1,11 +1,11 @@
 import csv
-
+import os
 
 import peewee
 from peewee import AutoField, BooleanField, ForeignKeyField, IntegerField, Model, PostgresqlDatabase, TextField
 # SqliteDatabase
 
-# database = PostgresqlDatabase(DATABASE_URL)
+database = PostgresqlDatabase(os.environ('DATABASE_URL'))
 
 # database = SqliteDatabase('riddles_db')
 
