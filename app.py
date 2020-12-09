@@ -210,6 +210,7 @@ def index():
     try:
         for user in query:
             top_players += [{'name': user.user_name, "total_points": user.total_points}]
+            database.close()
     except peewee.ProgrammingError:
         print(None)
         database.close()
@@ -225,6 +226,7 @@ def home():
     try:
         for user in query:
             top_players += [{'name': user.user_name, "total_points": user.total_points}]
+            database.close()
     except peewee.ProgrammingError:
         print(None)
         database.close()
