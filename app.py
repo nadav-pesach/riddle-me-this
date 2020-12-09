@@ -216,6 +216,21 @@ def index():
     return render_template('index.j2', game_played=game_played, top_players=top_players)
 
 
+@app.route('/')
+def home():
+    # need to coppy this into answers as well to return when player make mistake
+    game_played = Games.select().order_by(Games.game_id.desc()).count()
+    query = Users.select(Users.user_name, peewee.fn.COUNT().alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(Users.user_name.desc()).limit(3)
+    top_players = []
+    try:
+        for user in query:
+            top_players += [{'name': user.user_name, "total_points": user.total_points}]
+    except peewee.ProgrammingError:
+        print(None)
+
+    return render_template('index.j2', game_played=game_played, top_players=top_players)
+
+
 if __name__ == '__main__':
     app.run()
 
