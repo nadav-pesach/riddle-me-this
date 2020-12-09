@@ -53,6 +53,7 @@ TABLES = [Users, Games, GameResulte, Riddles]
 with database.connection_context():
     database.create_tables(TABLES, safe=True)
     database.commit()
+    database.close()
 # Riddles.create_table()
 # Users.create_table()
 # Games.create_table()
@@ -73,4 +74,5 @@ try:
         database.commit()
 except peewee.IntegrityError as err:
     print(err, 'riddle db alreay updated')
+    database.close()
 
