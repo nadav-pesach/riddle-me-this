@@ -3,7 +3,7 @@ import os
 
 import peewee
 from peewee import AutoField, BooleanField, ForeignKeyField, IntegerField, Model, PostgresqlDatabase, TextField
-from playhouse import connect
+from playhouse.db_url import connect
 # SqliteDatabase
 
 database = connect(os.environ.get('DATABASE_URL'))
