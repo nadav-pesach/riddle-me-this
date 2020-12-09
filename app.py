@@ -212,7 +212,7 @@ def index():
             top_players += [{'name': user.user_name, "total_points": user.total_points}]
     except peewee.ProgrammingError:
         print(None)
-
+        database.close()
     return render_template('index.j2', game_played=game_played, top_players=top_players)
 
 
@@ -227,7 +227,7 @@ def home():
             top_players += [{'name': user.user_name, "total_points": user.total_points}]
     except peewee.ProgrammingError:
         print(None)
-
+        database.close()
     return render_template('index.j2', game_played=game_played, top_players=top_players)
 
 
