@@ -166,7 +166,7 @@ def answer():
             # resulte = model_to_dict(resulte)['id']
             session.pop('game_id', None)
             game_played = Games.select().order_by(Games.game_id.desc()).count()
-            query = Users.select(Users.user_name, peewee.fn.COUNT().alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(Users.user_name.desc()).limit(3)
+            query = Users.select(Users.user_name, peewee.fn.COUNT(Users.user_name).alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(peewee.fn.COUNT(Users.user_name).desc()).limit(3)
             top_players = []
             try:
                 for user in query:
@@ -208,7 +208,7 @@ def logout():
 def index():
     # need to coppy this into answers as well to return when player make mistake
     game_played = Games.select().order_by(Games.game_id.desc()).count()
-    query = Users.select(Users.user_name, peewee.fn.COUNT().alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(Users.user_name.desc()).limit(3)
+    query = Users.select(Users.user_name, peewee.fn.COUNT(Users.user_name).alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(peewee.fn.COUNT(Users.user_name).desc()).limit(3)
     top_players = []
     try:
         for user in query:
