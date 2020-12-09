@@ -162,7 +162,7 @@ def answer():
             try:
                 resulte = GameResulte.select().where(GameResulte.game == session['game_id']).count()
             except:
-                return redirect(url_for('index.j2', resulte='0'))
+                return redirect(url_for('index', resulte='0'))
             # resulte = model_to_dict(resulte)['id']
             session.pop('game_id', None)
             game_played = Games.select().order_by(Games.game_id.desc()).count()
@@ -173,7 +173,7 @@ def answer():
                     top_players += [user.user_name, user.total_points]
             except peewee.ProgrammingError as err:
                 print(err)
-            return redirect(url_for('index.j2', game_played=game_played, top_players=top_players, resulte=resulte))
+            return redirect(url_for('index', game_played=game_played, top_players=top_players, resulte=resulte))
     return render_template('game.j2', )
 
 
