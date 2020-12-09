@@ -162,7 +162,7 @@ def answer():
             try:
                 resulte = GameResulte.select().where(GameResulte.game == session['game_id']).count()
             except:
-                return render_template('index.j2', resulte='0')
+                return redirect(url_for('index.j2', resulte='0'))
             # resulte = model_to_dict(resulte)['id']
             session.pop('game_id', None)
             game_played = Games.select().order_by(Games.game_id.desc()).count()
