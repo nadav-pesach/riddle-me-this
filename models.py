@@ -4,7 +4,7 @@ import os
 import peewee
 from peewee import AutoField, BooleanField, ForeignKeyField, IntegerField, Model, PostgresqlDatabase, TextField
 # SqliteDatabase
-app.config.from_object(__name__)
+
 database = PostgresqlDatabase(os.environ.get('DATABASE_URL'))
 
 # database = SqliteDatabase('riddles_db')
