@@ -222,7 +222,7 @@ def index():
 def home():
     # need to coppy this into answers as well to return when player make mistake
     game_played = Games.select().order_by(Games.game_id.desc()).count()
-    query = Users.select(Users.user_name, peewee.fn.COUNT(user_name).alias('total_points')).join(Games).join(GameResulte).group_by(peewee.fn.COUNT(user_name)).limit(3)
+    query = Users.select(Users.user_name, peewee.fn.COUNT(Users.user_name).alias('total_points')).join(Games).join(GameResulte).group_by(peewee.fn.COUNT(Users.user_name)).limit(3)
     top_players = []
     try:
         for user in query:
