@@ -1,0 +1,33 @@
+{% extends "base.j2" %} {% block content %}
+<div class="user">
+    <p>User name:{{user['user_name']}}</p>
+    <p>email: {{user['email']}}</p>
+
+    <form action="/delete" method="POST">
+    <label for="user_name"><b>user_name</b></label>
+    <input type="text" placeholder="User Name" name="user_name" id="user_name">
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" id="password">
+    <button type="submit" class="registerbtn">delete</button>
+    
+    </form>
+
+    <form action="/update" method="POST">
+    <div class="container">
+    <h1>update</h1>
+    <hr>
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="email(leave empty to delete email)" name="email" id="email">
+    <label for="user_name"><b>user_name</b></label>
+    <input type="text" placeholder="User Name" name="user_name" id="user_name">
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" id="password">
+    <label for="new_password"><b>New password</b></label>
+    <input type="password" placeholder="Enter new password" name="new_password" id="new_password">
+    
+    <button type="submit" class="registerbtn">Upade</button>
+  </div>
+
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>RIddle Me This?</title>
+    <link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+</head>
+
+<body>
+    <nav id="navbar">
+        <ul>
+            <li><a href="/index">Home</a></li>
+            <li><a href="/register">register</a></li>
+            <li><a href="/login">login</a></li>
+            <li><a href="/logout">Logout</a></li>
+            <li><a href="/find-us">Find us</a></li>
+        </ul>
+    </nav>
+    {% block content %} {% endblock %}
+    </div>
+</body>
+
+</html>

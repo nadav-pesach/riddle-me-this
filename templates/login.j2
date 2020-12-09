@@ -1,0 +1,22 @@
+{% extends "base.j2" %} {% block content %}
+<form action="/login" method="POST">
+
+  <div class="container">
+    <label for="user_name"><b>user_name</b></label>
+    <input type="text" placeholder="User Name" name="user_name" id="user_name" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" required>
+
+    <button type="submit">Login</button>
+    <label>
+      <input type="checkbox" checked="checked" name="remember"> Remember me
+    </label>
+  </div>
+
+  <div class="container" style="background-color:#f1f1f1">
+    <button type="button" class="cancelbtn">Cancel</button>
+    <span class="password">Forgot <a href="#">password?</a></span>
+  </div>
+</form>
+{% endblock %}

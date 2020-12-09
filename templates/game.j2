@@ -1,0 +1,13 @@
+{% extends "base.j2" %} {% block content %}
+
+
+<div class="riddle">
+    <p>riddle: {{riddle}}</p>
+    <p>difficulty: {{difficulty}}</p>
+    <form action="/answer" method="POST">
+    <label for="answer"><b>answer</b></label>
+    <input type="text" placeholder="answer" name="answer" id="answer">
+    <button type="submit">answer</button>
+    </form>
+</div>
+{% endblock %}
