@@ -3,9 +3,10 @@ import os
 
 import peewee
 from peewee import AutoField, BooleanField, ForeignKeyField, IntegerField, Model, PostgresqlDatabase, TextField
+from playhouse import connect
 # SqliteDatabase
 
-database = peewee.PostgresqlDatabase(os.environ.get('DATABASE_URL'), user='postgres')
+database = connect(os.environ.get('DATABASE_URL'), user='postgres')
 
 # database = SqliteDatabase('riddles_db')
 
