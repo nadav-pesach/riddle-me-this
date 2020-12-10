@@ -174,7 +174,7 @@ def answer():
                     top_players += [user.user_name, user.total_points]
             except peewee.ProgrammingError as err:
                 print(err)
-            return redirect(url_for('index', game_played=game_played, top_players=top_players, resulte=resulte))
+            return redirect(url_for('index.j2', game_played=game_played, top_players=top_players, resulte=resulte))
     return render_template('game.j2', )
 
 
