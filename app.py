@@ -174,7 +174,7 @@ def answer():
                     top_players += [user.user_name, user.total_points]
             except peewee.ProgrammingError as err:
                 print(err)
-            return redirect(url_for('index.j2', game_played=game_played, top_players=top_players, resulte=resulte))
+            return redirect(url_for('index', game_played=game_played, top_players=top_players, resulte=resulte))
     return render_template('game.j2', )
 
 
@@ -206,8 +206,7 @@ def logout():
 
 
 @app.route('/index')
-def index():
-    # need to coppy this into answers as well to return when player make mistake
+def index(resulte=None):
     game_played = Games.select().order_by(Games.game_id.desc()).count()
     query = Users.select(Users.user_name, peewee.fn.COUNT(Users.user_name).alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(peewee.fn.COUNT(Users.user_name).desc()).limit(3)
     top_players = []
@@ -216,12 +215,11 @@ def index():
             top_players += [{'name': user.user_name, "total_points": user.total_points}]
     except peewee.ProgrammingError:
         print(None)
-    return render_template('index.j2', game_played=game_played, top_players=top_players)
+    return render_template('index.j2', game_played=game_played, top_players=top_players, resulte=resulte)
 
 
 @app.route('/')
 def home():
-    # need to coppy this into answers as well to return when player make mistake
     game_played = Games.select().order_by(Games.game_id.desc()).count()
     query = Users.select(Users.user_name, peewee.fn.COUNT(Users.user_name).alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(peewee.fn.COUNT(Users.user_name).desc()).limit(3)
     top_players = []
