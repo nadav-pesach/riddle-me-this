@@ -145,7 +145,7 @@ def answer():
         game_play = Games(**filde)
         game_play.save()
         game_id = Games.select().order_by(Games.game_id.desc()).get()
-        game_id = model_to_dict(game_id)['game']
+        game_id = model_to_dict(game_id)['game_id']
         session['game_id'] = game_id
     answer = str(request.form['answer'])
     if 'riddle' in session:
