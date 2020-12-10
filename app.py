@@ -163,7 +163,7 @@ def answer():
                 resulte = GameResulte.select().where(GameResulte.game == session['game_id']).count()
             except:
                 return redirect(url_for('index', resulte='0'))
-                resulte = '0'
+            resulte = '0'
             session.pop('game_id', None)
             game_played = Games.select().order_by(Games.game_id.desc()).count()
             query = Users.select(Users.user_name, peewee.fn.COUNT(Users.user_name).alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(peewee.fn.COUNT(Users.user_name).desc()).limit(3)
