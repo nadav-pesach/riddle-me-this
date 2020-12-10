@@ -99,7 +99,7 @@ def delete():
     if not bcrypt.checkpw(password, real_password):
         return abort(403, 'user_name and password does not match')
     Users.delete().where(Users.user_name == user_name).execute()
-    return render_template('register.j2')
+    return redirect(url_for('register'))
 
 
 
@@ -162,10 +162,8 @@ def answer():
             return redirect(url_for('game'))
         else:
             resulte = 0
-            try:
-                resulte = GameResulte.select().where(GameResulte.game == session['game_id']).count()
-            except:
-                print(None)
+            resulte = GameResulte.select().where(GameResulte.game == session['game_id']).count()
+
             if not resulte:
                 resulte = 'game over'
             session.pop('game_id', None)
@@ -223,7 +221,7 @@ def index(resulte=None):
     return render_template('index.j2', game_played=game_played, top_players=top_players)
 
 
-    
+
 if __name__ == '__main__':
     app.run()
 
