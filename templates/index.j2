@@ -1,23 +1,28 @@
 {% extends "base.j2" %} {% block content %}
 <h1>?RIddle Me This?</h1>
-<div>
+<div id="resulte">
 {% if resulte %}
-game resulte: {{resulte}}
+<P>game resulte: {{resulte}}</p>
 {% endif %} 
 </div>
+{% if session['user_name'] %}
+<p> Hello {{session['user_name']}} </p>
 <div id="game">
     <a href="/game">start game</a>
 </div>
-
-<div class=statistics>
-    <h1>Statistics</h1>
-    <br>
-    <p>game played: {{game_played}}</p>
-    <br>
+{% endif %}
+<br>
+<p>Total game played: {{game_played}}</p>
+<br>
+<h2>Top players: </h2>
+<br>
+<div class=top-players>
+    
     <ul class="flex-form">
+        
         {% for player in top_players %}
         <li>
-            player {{player['name']}} total points:{{player['total_points']}}
+             {{player['name']}}: total points {{player['total_points']}} 
         </li>{% endfor %}
     </ul>
 {% endblock %}

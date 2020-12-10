@@ -6,17 +6,21 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>RIddle Me This?</title>
     <link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 </head>
+
 
 <body>
     <nav id="navbar">
         <ul>
             <li><a href="/">Home</a></li>
+            {% if session['user_name'] %}
+            <li><a href="/profil">profil</a></li>
+            <li><a href="/logout">Logout</a></li>
+            {% else %}
             <li><a href="/register">register</a></li>
             <li><a href="/login">login</a></li>
-            <li><a href="/logout">Logout</a></li>
+            {% endif %}
             <li><a href="/find-us">Find us</a></li>
         </ul>
     </nav>

@@ -1,7 +1,7 @@
 {% extends "base.j2" %} {% block content %}
 <div class="user">
-    <p>User name:{{user['user_name']}}</p>
-    <p>email: {{user['email']}}</p>
+    <div class="container">
+    <p>User name:{{session['user_name']}}</p>
 
     <form action="/delete" method="POST">
     <label for="user_name"><b>user_name</b></label>
@@ -11,7 +11,7 @@
     <button type="submit" class="registerbtn">delete</button>
     
     </form>
-
+    </div>
     <form action="/update" method="POST">
     <div class="container">
     <h1>update</h1>
