@@ -23,15 +23,15 @@ def after_request(response):
     database.close()
     return response
 
-
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     # credit: Yam Mesicka
     # https://youtu.be/nl1R7MV8jB0
+    if 'user_name' in session:
+        return redirect(url_for('index'))
     if request.method == 'GET':
         return render_template('register.j2')
-
+    
     salt = bcrypt.gensalt(prefix=b'2b', rounds=10)
     unhashed_password = request.form['password'].encode('utf-8')
     hashed_password = bcrypt.hashpw(unhashed_password, salt)
@@ -46,13 +46,15 @@ def register():
         user.save()
     except peewee.IntegrityError:
         return abort(403, f'User {user_name} exists, try something else')
-    return 'Success!'
+    return render_template('login.j2')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # credit: Yam Mesicka
     # https://youtu.be/nl1R7MV8jB0
+    if 'user_name' in session:
+        return redirect(url_for('index'))
     if request.method == 'GET':
         return render_template('login.j2')
 
@@ -193,6 +195,10 @@ def game():
 def find_us():
     return render_template('find-us.j2')
 
+@app.route('/profil')
+def profil():
+    return render_template('profil.j2')
+
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     for session_value in ('user_name', 'level', 'game', 'game_resulte', 'riddle'):
@@ -217,19 +223,7 @@ def index(resulte=None):
     return render_template('index.j2', game_played=game_played, top_players=top_players)
 
 
-# @app.route('/')
-# def home():
-#     game_played = Games.select().order_by(Games.game_id.desc()).count()
-#     query = Users.select(Users.user_name, peewee.fn.COUNT(Users.user_name).alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(peewee.fn.COUNT(Users.user_name).desc()).limit(3)
-#     top_players = []
-#     try:
-#         for user in query:
-#             top_players += [{'name': user.user_name, "total_points": user.total_points}]
-#     except peewee.ProgrammingError:
-#         print(None)
-#     return render_template('index.j2', game_played=game_played, top_players=top_players)
-
-
+    
 if __name__ == '__main__':
     app.run()
 
