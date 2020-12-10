@@ -165,6 +165,7 @@ def answer():
                 # return redirect(url_for('index', resulte='0'))
                 resulte = 'game over'
             session.pop('game_id', None)
+            session.pop('riddle', None)
             session['resulte'] = resulte
             return redirect(url_for('index'))
     return render_template('game.j2', )
