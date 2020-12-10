@@ -112,8 +112,8 @@ def delete():
     if not bcrypt.checkpw(password, real_password):
         return abort(403, 'user_name and password does not match')
     Users.delete().where(Users.user_name == user_name).execute()
-    for item in session:
-        session.pop(item, None)
+    for session_value in ('user_name', 'level', 'game', 'game_resulte', 'riddle'):
+        session.pop(session_value, None)
     return redirect(url_for('register'))
 
 
@@ -216,8 +216,8 @@ def profil():
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    for item in session:
-        session.pop(item, None)
+    for session_value in ('user_name', 'level', 'game', 'game_resulte', 'riddle'):
+        session.pop(session_value, None)
     return render_template('login.j2')
 
 
