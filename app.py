@@ -162,19 +162,21 @@ def answer():
             try:
                 resulte = GameResulte.select().where(GameResulte.game == session['game_id']).count()
             except:
-                return redirect(url_for('index', resulte='0'))
-            resulte = '0'
+                # return redirect(url_for('index', resulte='0'))
+                resulte = '0'
             session.pop('game_id', None)
-            game_played = Games.select().order_by(Games.game_id.desc()).count()
-            query = Users.select(Users.user_name, peewee.fn.COUNT(Users.user_name).alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(peewee.fn.COUNT(Users.user_name).desc()).limit(3)
-            top_players = []
-            try:
-                for user in query:
-                    top_players += [user.user_name, user.total_points]
-            except peewee.ProgrammingError as err:
-                print(err)
+            session['resulte'] = resulte
+            return redirect(url_for('index'))
+            # game_played = Games.select().order_by(Games.game_id.desc()).count()
+            # query = Users.select(Users.user_name, peewee.fn.COUNT(Users.user_name).alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(peewee.fn.COUNT(Users.user_name).desc()).limit(3)
+            # top_players = []
+            # try:
+            #     for user in query:
+            #         top_players += [user.user_name, user.total_points]
+            # except peewee.ProgrammingError as err:
+            #     print(err)
             
-            return render_template('index.j2', game_played=game_played, top_players=top_players)
+            # return render_template('index.j2', game_played=game_played, top_players=top_players)
     return render_template('game.j2', )
 
 
@@ -215,7 +217,9 @@ def index(resulte=None):
             top_players += [{'name': user.user_name, "total_points": user.total_points}]
     except peewee.ProgrammingError:
         print(None)
-    if resulte:
+    if 'resulte' in session:
+        resulte = session['resulte']
+        session.pop('resulte', None)
         return render_template('index.j2', game_played=game_played, top_players=top_players, resulte=resulte)
     return render_template('index.j2', game_played=game_played, top_players=top_players)
 
