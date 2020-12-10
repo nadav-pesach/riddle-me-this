@@ -1,15 +1,26 @@
 import os
 import random
 
+
 import bcrypt
+
+
+from flask import abort, render_template, request, session, url_for
+from flask import Flask
+
+
+from models import database
+from models import GameResulte, Games, Riddles, Users
+
+
 import peewee
-import requests
-from flask import abort, Flask, render_template, request, session, url_for
+
+
 from playhouse.shortcuts import model_to_dict
+
+
 from werkzeug.utils import redirect
 
-import models
-from models import database, GameResulte, Games, Riddles, Users
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
@@ -101,6 +112,8 @@ def delete():
     if not bcrypt.checkpw(password, real_password):
         return abort(403, 'user_name and password does not match')
     Users.delete().where(Users.user_name == user_name).execute()
+    for item in session:
+        session.pop(item, None)
     return redirect(url_for('register'))
 
 
@@ -172,7 +185,7 @@ def answer():
             session.pop('riddle', None)
             session['resulte'] = resulte
             return redirect(url_for('index'))
-    return render_template('game.j2', )
+    return render_template('game.j2')
 
 
 @app.route('/game')
@@ -203,8 +216,8 @@ def profil():
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    for session_value in ('user_name', 'level', 'game', 'game_resulte', 'riddle'):
-        session.pop(session_value, None)
+    for item in session:
+        session.pop(item, None)
     return render_template('login.j2')
 
 
