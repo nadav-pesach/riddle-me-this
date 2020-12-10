@@ -159,11 +159,12 @@ def answer():
             session.pop('riddle', None)
             return redirect(url_for('game'))
         else:
-            resulte = 'game over'
             try:
                 resulte = GameResulte.select().where(GameResulte.game == session['game_id']).count()
             except:
                 print(None)
+            if not resulte:
+                resulte = 'game over'
             session.pop('game_id', None)
             session.pop('riddle', None)
             session['resulte'] = resulte
