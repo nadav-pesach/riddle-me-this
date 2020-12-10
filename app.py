@@ -209,7 +209,7 @@ def index(resulte=None):
     except peewee.ProgrammingError:
         print(None)
     if 'resulte' in session:
-        resulte = session['resulte']
+        resulte = str(session['resulte'])
         session.pop('resulte', None)
         return render_template('index.j2', game_played=game_played, top_players=top_players, resulte=resulte)
     return render_template('index.j2', game_played=game_played, top_players=top_players)
