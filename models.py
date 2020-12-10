@@ -2,20 +2,23 @@ import csv
 import os
 
 import peewee
-from peewee import AutoField, BooleanField, ForeignKeyField, IntegerField, Model, PostgresqlDatabase, TextField
+from peewee import (AutoField, BooleanField, ForeignKeyField, IntegerField,
+                    Model, TextField)
 from playhouse.db_url import connect
-# SqliteDatabase
+
 
 database = connect(os.environ.get('DATABASE_URL'))
 
-# database = SqliteDatabase('riddles_db')
 
 class UnknownField(object):
-    def __init__(self, *_, **__): pass
+    def __init__(self, *_, **__):
+        pass
+
 
 class BaseModel(Model):
     class Meta:
         database = database
+
 
 class Riddles(BaseModel):
     answer = TextField()
@@ -24,6 +27,7 @@ class Riddles(BaseModel):
 
     class Meta:
         table_name = 'riddles'
+
 
 class Users(BaseModel):
     email = TextField(null=True)
@@ -34,12 +38,15 @@ class Users(BaseModel):
     class Meta:
         table_name = 'users'
 
+
 class Games(BaseModel):
     game_id = AutoField()
-    user_name = ForeignKeyField(column_name='user_name', field='user_name', model=Users)
+    user_name = ForeignKeyField(
+        column_name='user_name', field='user_name', model=Users)
 
     class Meta:
         table_name = 'games'
+
 
 class GameResulte(BaseModel):
     game = ForeignKeyField(column_name='game_id', field='game_id', model=Games)
@@ -48,6 +55,7 @@ class GameResulte(BaseModel):
 
     class Meta:
         table_name = 'game_resulte'
+
 
 TABLES = [Users, Games, GameResulte, Riddles]
 with database.connection_context():
@@ -63,7 +71,7 @@ with database.connection_context():
 # link: https://stackoverflow.com/a/21572244
 with open('riddles.csv') as f:
     data = [{k: v for k, v in row.items()}
-        for row in csv.DictReader(f, skipinitialspace=True)]
+            for row in csv.DictReader(f, skipinitialspace=True)]
 try:
     with database.atomic():
         # https://github.com/sqlalchemy/sqlalchemy/issues/4656#issuecomment-489233090
@@ -75,4 +83,3 @@ try:
 except peewee.IntegrityError as err:
     print(err, 'riddle db alreay updated')
     database.close()
-

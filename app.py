@@ -4,24 +4,27 @@ import random
 import bcrypt
 import peewee
 import requests
-from flask import Flask, abort, render_template, request, session, url_for
+from flask import abort, Flask, render_template, request, session, url_for
 from playhouse.shortcuts import model_to_dict
 from werkzeug.utils import redirect
 
 import models
-from models import GameResulte, Games, Riddles, Users, database
+from models import database, GameResulte, Games, Riddles, Users
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
+
 
 @app.before_request
 def before_request():
     database.connect()
 
+
 @app.after_request
 def after_request(response):
     database.close()
     return response
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -31,7 +34,7 @@ def register():
         return redirect(url_for('index'))
     if request.method == 'GET':
         return render_template('register.j2')
-    
+
     salt = bcrypt.gensalt(prefix=b'2b', rounds=10)
     unhashed_password = request.form['password'].encode('utf-8')
     hashed_password = bcrypt.hashpw(unhashed_password, salt)
@@ -77,7 +80,6 @@ def login():
     return render_template('profil.j2', user=user)
 
 
-
 @app.route('/delete', methods=['GET', 'POST'])
 def delete():
     # credit: Yam Mesicka
@@ -100,7 +102,6 @@ def delete():
         return abort(403, 'user_name and password does not match')
     Users.delete().where(Users.user_name == user_name).execute()
     return redirect(url_for('register'))
-
 
 
 @app.route('/update', methods=['GET', 'POST'])
@@ -138,6 +139,7 @@ def update():
     Users.update(**fields).where(Users.user_name == user_name).execute()
     return render_template('profil.j2', user=user)
 
+
 @app.route('/answer', methods=['GET', 'POST'])
 def answer():
     if request.method == 'GET':
@@ -162,8 +164,8 @@ def answer():
             return redirect(url_for('game'))
         else:
             resulte = 0
-            resulte = GameResulte.select().where(GameResulte.game == session['game_id']).count()
-
+            resulte = GameResulte.select().where(
+                GameResulte.game == session['game_id']).count()
             if not resulte:
                 resulte = 'game over'
             session.pop('game_id', None)
@@ -187,15 +189,17 @@ def game():
     dict_riddle = model_to_dict(riddle)
     session['riddle'] = dict_riddle
     return render_template('game.j2', **session['riddle'])
-    
+
 
 @app.route('/find-us')
 def find_us():
     return render_template('find-us.j2')
 
+
 @app.route('/profil')
 def profil():
     return render_template('profil.j2')
+
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
@@ -207,13 +211,15 @@ def logout():
 @app.route('/')
 def index(resulte=None):
     game_played = Games.select().order_by(Games.game_id.desc()).count()
-    query = Users.select(Users.user_name, peewee.fn.COUNT(Users.user_name).alias('total_points')).join(Games).join(GameResulte).group_by(Users.user_name).order_by(peewee.fn.COUNT(Users.user_name).desc()).limit(3)
+    query = Users.select(Users.user_name, peewee.fn.COUNT(Users.user_name).alias('total_points')).join(
+        Games).join(GameResulte).group_by(Users.user_name).order_by(peewee.fn.COUNT(Users.user_name).desc()).limit(3)
     top_players = []
     try:
         for user in query:
-            top_players += [{'name': user.user_name, "total_points": user.total_points}]
-    except peewee.ProgrammingError:
-        print(None)
+            top_players += [{'name': user.user_name,
+                             "total_points": user.total_points}]
+    except peewee.ProgrammingError as err:
+        print(err)
     if 'resulte' in session:
         resulte = str(session['resulte'])
         session.pop('resulte', None)
@@ -221,8 +227,5 @@ def index(resulte=None):
     return render_template('index.j2', game_played=game_played, top_players=top_players)
 
 
-
 if __name__ == '__main__':
     app.run()
-
-
