@@ -215,7 +215,9 @@ def index(resulte=None):
             top_players += [{'name': user.user_name, "total_points": user.total_points}]
     except peewee.ProgrammingError:
         print(None)
-    return render_template('index.j2', game_played=game_played, top_players=top_players, resulte=resulte)
+    if resulte:
+        return render_template('index.j2', game_played=game_played, top_players=top_players, resulte=resulte)
+    return render_template('index.j2', game_played=game_played, top_players=top_players)
 
 
 @app.route('/')
